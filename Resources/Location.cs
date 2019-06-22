@@ -14,7 +14,7 @@ namespace OgSim.Resources
 
         public int galaxy;
         public int system;
-        public int planet;
+        public int position;
         public LocationType planetType;
 
     }

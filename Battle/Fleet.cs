@@ -11,9 +11,9 @@ namespace OgSim.Battle
         public string name;
         public Location mainPlanet;
         public Dictionary<int, int> originalFleet;
-        int militaryTech;
-        int defenseTech;
-        int hullTech;
+        public int militaryTech;
+        public int defenseTech;
+        public int hullTech;
 
         public Dictionary<int, ShipType> shipTypes;
 
@@ -42,15 +42,14 @@ namespace OgSim.Battle
                 double h = shipType.baseHull;
                 double d = shipType.baseAttack;
 
-                //Debugger.ConsoleLog(fleetList);
+                //Debugger.ConsoleLog(this);
                 //Debugger.ConsoleLog(shipType);
 
                 for (int i = 0; i < stk.Value; i++)
                 {
                     fleetList.Add((h, d, shipType));
                 }
-
-                shipTypes.Add(id, shipType);
+                shipTypes.Add(stk.Key, shipType);
 
             }
         }

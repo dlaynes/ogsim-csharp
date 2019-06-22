@@ -42,6 +42,9 @@ namespace OgSim
             defenderGroup.ExpandFleets();
             profiler.StopTask("fleet_expansion");
 
+            //Debugger.ConsoleLog(attackerGroup.fleetList);
+            //Debugger.ConsoleLog(defenderGroup.fleetList);
+            //return;
 
             profiler.StartTask("battle_rounds");
             int turns = 6;

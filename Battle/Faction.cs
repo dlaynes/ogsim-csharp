@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using OgSim.Resources;
+using OgSim.Misc;
 
 namespace OgSim.Battle
 {
     public class Faction
     {
-        List<Fleet> fleetList;
+        public List<Fleet> fleetList;
         readonly Dictionary<int, Resource> resourceList = new Dictionary<int, Resource>();
         readonly string group;
 
@@ -79,6 +80,8 @@ namespace OgSim.Battle
 
             bool running;
 
+            //int debug = 0;
+
             foreach (var ship in ships)
             {
                 dm = ship.Item3.baseAttack;
@@ -86,10 +89,12 @@ namespace OgSim.Battle
                 running = true;
                 while (running)
                 {
+                    //debug++;
+
                     enemyPos = rn.Next(enemyCount);
                     enemyShip = enemyShips[enemyPos];
                     enemyShipType = enemyShip.Item3;
-                    tDm += enemyShip.Item1;
+                    tDm += dm;
 
                     //Item1 = hull, Item2 = defense, Item3 = ShipType
                     if (enemyShip.Item1 > 0.0)
@@ -149,6 +154,8 @@ namespace OgSim.Battle
                     }
                 }
             }
+
+            //Debugger.ConsoleLog(debug);
 
             turnAttacks = tA;
             turnDefense = tDf;

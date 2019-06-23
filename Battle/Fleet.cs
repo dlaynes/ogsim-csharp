@@ -20,7 +20,6 @@ namespace OgSim.Battle
         public Fleet()
         {
             shipTypes = new Dictionary<int, ShipType>();
-            //originalFleet = new Dictionary<string, int>();
         }
 
         public void ExpandTo
@@ -41,14 +40,18 @@ namespace OgSim.Battle
 
                 double h = shipType.baseHull;
                 double d = shipType.baseAttack;
+#if (DEBUG)
+                Debugger.ConsoleLog(this);
+                Debugger.ConsoleLog(shipType);
+#endif
 
-                //Debugger.ConsoleLog(this);
-                //Debugger.ConsoleLog(shipType);
-
+#if(!DEBUG)
                 for (int i = 0; i < stk.Value; i++)
                 {
                     fleetList.Add((h, d, shipType));
                 }
+#endif
+
                 shipTypes.Add(stk.Key, shipType);
 
             }

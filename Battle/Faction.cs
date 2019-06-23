@@ -17,6 +17,8 @@ namespace OgSim.Battle
 
         public List<(double, double, ShipType)> ships = new List<(double, double, ShipType)>();
 
+        
+
         public Faction(string group, Dictionary<int, Resource> resources, List<Fleet> fleet)
         {
             this.group = group;
@@ -32,10 +34,10 @@ namespace OgSim.Battle
             }
         }
 
-        public void AfterRound(int turn)
+        public void AfterRound(int turn, string other)
         {
             Console.WriteLine("The "+group+ " faction attacked "+turnAttacks+" times with "+ turnDamage+" hit points");
-            Console.WriteLine("The other fleet shields absorbed "+turnDefense+" points of damage");
+            Console.WriteLine("The "+other+" fleet shields absorbed "+turnDefense+" points of damage");
 
             turnDefense = 0;
             turnDamage = 0;
@@ -48,18 +50,18 @@ namespace OgSim.Battle
 
             List<(double, double, ShipType)> newShips = new List<(double, double, ShipType)>();
             //TODO: convertir a llamada de array?
-            foreach(var (h,d,st) in ships)
+            foreach(var ship in ships)
             {
-                if(h > 0.0)
+                if(ship.Item1 > 0.0)
                 {
-                    newShips.Add( (h,st.baseShield,st) );
+                    newShips.Add( (ship.Item1,ship.Item3.baseShield,ship.Item3) );
                 }
             }
             ships = newShips;
             Console.WriteLine(group + ": Length after cleanup " + ships.Count);
         }
 
-        public void Attack(Faction otherGroup)
+        public void Attack(Faction otherGroup, Dictionary<int, Dictionary<int, double>> rapidfireInfo)
         {
             Random rn = new Random();
 
@@ -92,7 +94,6 @@ namespace OgSim.Battle
                     enemyShipType = enemyShip.Item3;
                     tDm += dm;
 
-                    //Item1 = hull, Item2 = defense, Item3 = ShipType
                     if (enemyShip.Item1 > 0.0)
                     {
                         if(dm * 100 > enemyShipType.baseShield)
@@ -107,7 +108,7 @@ namespace OgSim.Battle
                                     remaining = enemyShip.Item1 - de;
                                     xp = remaining / enemyShipType.baseHull;
 
-                                    if(xp < 0.7 && rn.NextDouble() > (1.0 - xp))
+                                    if(xp < 0.7 && ( rn.NextDouble() < 1 - xp) )
                                     {
                                         //Kaboom
                                         enemyShips[enemyPos] = (0.0, 0.0, enemyShipType);
@@ -128,20 +129,29 @@ namespace OgSim.Battle
                             else
                             {
                                 tDf += dm;
-                                enemyShips[enemyPos] = (enemyShip.Item1, enemyShip.Item2 - dm, enemyShipType);
+
+                                //Damaged ships from previous rounds should explode anyway
+                                xp = enemyShip.Item1 / enemyShipType.baseHull;
+                                if (xp < 0.7 && (rn.NextDouble() < 1 - xp))
+                                {
+                                    //Kaboom
+                                    enemyShips[enemyPos] = (0.0, 0.0, enemyShipType);
+                                    enemyShipType.explosions++;
+
+                                }
+                                else
+                                {
+                                    enemyShips[enemyPos] = (enemyShip.Item1, enemyShip.Item2 - dm, enemyShipType);
+                                }
                             }
                         }
                         else
                         {
                             tDf += dm;
-                            //running = false;
                         }
                     }
 
-                    if(
-                        ship.Item3.rapidFires.TryGetValue(enemyShipType.id, out double rf)
-                        && rf > rn.NextDouble()
-                    ){
+                    if(rapidfireInfo[ship.Item3.id][enemyShipType.id] > rn.NextDouble() ){
                         tA++;
                         running = true;
                     } else

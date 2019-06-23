@@ -22,12 +22,13 @@ namespace OgSim.Resources
 
         public Dictionary<int, double> rapidFires = new Dictionary<int, double>();
 
-        public void ProcessRapidfires(Dictionary<int, int> rfRaw)
+        public Dictionary<int, double> ProcessRapidfires(Dictionary<int, int> rfRaw)
         {
             foreach (KeyValuePair<int, int> kvp in rfRaw)
             {
                 rapidFires.Add(kvp.Key, (1.0 - (1.0 / kvp.Value) ) );
             }
+            return rapidFires;
         }
             
     }

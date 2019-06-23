@@ -1,4 +1,7 @@
-﻿using System;
+﻿//#define SMALLARMY
+//#define DEBUG
+
+using System;
 using System.Collections.Generic;
 using OgSim.Resources;
 using OgSim.Misc;
@@ -34,6 +37,14 @@ namespace OgSim.Battle
             }
         }
 
+        public void BeforeRounds()
+        {
+#if DEBUG
+            Console.WriteLine("Antes de la batalla ("+group+")");
+            Debugger.ConsoleLog(ships);
+#endif
+        }
+
         public void AfterRound(int turn, string other)
         {
             Console.WriteLine("The "+group+ " faction attacked "+turnAttacks+" times with "+ turnDamage+" hit points");
@@ -49,7 +60,7 @@ namespace OgSim.Battle
             Console.WriteLine(group + ": Length before cleanup " + ships.Count);
 
             List<(double, double, ShipType)> newShips = new List<(double, double, ShipType)>();
-            //TODO: convertir a llamada de array?
+
             foreach(var ship in ships)
             {
                 if(ship.Item1 > 0.0)
@@ -59,6 +70,10 @@ namespace OgSim.Battle
             }
             ships = newShips;
             Console.WriteLine(group + ": Length after cleanup " + ships.Count);
+
+#if SMALLARMY
+            Debugger.ConsoleLog(ships);
+#endif
         }
 
         public void Attack(Faction otherGroup, Dictionary<int, Dictionary<int, double>> rapidfireInfo)
@@ -101,6 +116,9 @@ namespace OgSim.Battle
                             if ( dm > enemyShip.Item2 )
                             {
                                 de = dm - enemyShip.Item2;
+#if SMALLARMY
+                                Console.WriteLine("Daño sin escudo "+ship.Item3.id+": "+de+" - "+enemyShip.Item2);
+#endif
                                 tDf += enemyShip.Item2;
 
                                 if(de < enemyShip.Item1)
@@ -128,6 +146,10 @@ namespace OgSim.Battle
                             }
                             else
                             {
+#if SMALLARMY
+                                Console.WriteLine("Daño con escudo " + ship.Item3.id + ": " + dm + " - " + enemyShip.Item2);
+#endif
+
                                 tDf += dm;
 
                                 //Damaged ships from previous rounds should explode anyway

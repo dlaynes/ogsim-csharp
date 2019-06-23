@@ -48,8 +48,8 @@ namespace OgSim
             profiler.StartTask("battle_rounds");
             int turns = 6;
             bool exitBattle = false;
-
-            //TODO: mostrar el estado de las flotas completas
+            attackerGroup.BeforeRounds();
+            defenderGroup.BeforeRounds();
             for (int round = 1; round < turns + 1; round++)
             {
                 if (attackerGroup.ships.Count < 1)

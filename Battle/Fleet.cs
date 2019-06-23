@@ -1,4 +1,7 @@
-﻿using System;
+﻿//#define SMALLARMY
+//#define DEBUG
+
+using System;
 using System.Collections.Generic;
 using OgSim.Resources;
 using OgSim.Misc;
@@ -39,19 +42,19 @@ namespace OgSim.Battle
                 );
 
                 double h = shipType.baseHull;
-                double d = shipType.baseAttack;
+                double d = shipType.baseShield;
 #if (DEBUG)
-                Debugger.ConsoleLog(this);
+                //Debugger.ConsoleLog(this);
                 Debugger.ConsoleLog(shipType);
+                //Debugger.ConsoleLog(h);
 #endif
 
-#if(!DEBUG)
+#if(!DEBUG || SMALLARMY)
                 for (int i = 0; i < stk.Value; i++)
                 {
                     fleetList.Add((h, d, shipType));
                 }
 #endif
-
                 shipTypes.Add(stk.Key, shipType);
 
             }

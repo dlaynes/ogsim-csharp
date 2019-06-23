@@ -80,8 +80,6 @@ namespace OgSim.Battle
 
             bool running;
 
-            //int debug = 0;
-
             foreach (var ship in ships)
             {
                 dm = ship.Item3.baseAttack;
@@ -89,8 +87,6 @@ namespace OgSim.Battle
                 running = true;
                 while (running)
                 {
-                    //debug++;
-
                     enemyPos = rn.Next(enemyCount);
                     enemyShip = enemyShips[enemyPos];
                     enemyShipType = enemyShip.Item3;
@@ -111,7 +107,7 @@ namespace OgSim.Battle
                                     remaining = enemyShip.Item1 - de;
                                     xp = remaining / enemyShipType.baseHull;
 
-                                    if(xp < 0.7 && rn.NextDouble() < (1.0 - xp))
+                                    if(xp < 0.7 && rn.NextDouble() > (1.0 - xp))
                                     {
                                         //Kaboom
                                         enemyShips[enemyPos] = (0.0, 0.0, enemyShipType);
@@ -154,8 +150,6 @@ namespace OgSim.Battle
                     }
                 }
             }
-
-            //Debugger.ConsoleLog(debug);
 
             turnAttacks = tA;
             turnDefense = tDf;

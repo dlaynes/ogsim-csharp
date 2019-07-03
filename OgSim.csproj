@@ -10,6 +10,8 @@
     <Folder Include="Misc\" />
     <Folder Include="Battle\" />
     <Folder Include="Resources\" />
+    <Folder Include="Misc\Readers\" />
+    <Folder Include="Misc\DataObjects\" />
   </ItemGroup>
 
   <ItemGroup>

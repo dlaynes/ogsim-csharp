@@ -42,7 +42,7 @@ namespace OgSim.Battle
                 );
 
                 double h = shipType.baseHull;
-                double d = shipType.baseShield;
+                double s = shipType.baseShield;
 #if (DEBUG)
                 //Debugger.ConsoleLog(this);
                 Debugger.ConsoleLog(shipType);
@@ -52,7 +52,7 @@ namespace OgSim.Battle
 #if(!DEBUG || SMALLARMY)
                 for (int i = 0; i < stk.Value; i++)
                 {
-                    fleetList.Add((h, d, shipType));
+                    fleetList.Add((h, s, shipType));
                 }
 #endif
                 shipTypes.Add(stk.Key, shipType);

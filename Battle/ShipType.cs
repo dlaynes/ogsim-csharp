@@ -14,7 +14,7 @@ namespace OgSim.Battle
         public int amount;
         public int explosions;
 
-        //public Dictionary<int, double> rapidFires;
+        //public Dictionary<int, float> rapidFires;
         public List<int> statistics = new List<int>();
 
         public ShipType(

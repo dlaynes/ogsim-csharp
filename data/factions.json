@@ -30,11 +30,5 @@
             "defenseTech": 10,
             "hullTech": 10
         }
-    ],
-    "location": {
-        "galaxy": 1,
-        "system": 1,
-        "position": 2,
-        "planetType": 1
-    }
+    ]
 }

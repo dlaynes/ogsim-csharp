@@ -39,7 +39,7 @@ namespace OgSim.Battle
 
         public void BeforeRounds()
         {
-#if DEBUG
+#if DEBUG && SMALLARMY
             Console.WriteLine("Antes de la batalla ("+group+")");
             Debugger.ConsoleLog(ships);
 #endif
@@ -57,19 +57,22 @@ namespace OgSim.Battle
 
         public void CleanUp()
         {
+#if DEBUG
             Console.WriteLine(group + ": Length before cleanup " + ships.Count);
+#endif
+            List<(double, double, ShipType)> newShips = new List<(double, double, ShipType)>(ships.Count);
 
-            List<(double, double, ShipType)> newShips = new List<(double, double, ShipType)>();
-
-            foreach(var ship in ships)
+            for (int i = 0; i < ships.Count; i++)
             {
-                if(ship.Item1 > 0.0)
+                if (ships[i].Item1 > 0.0)
                 {
-                    newShips.Add( (ship.Item1,ship.Item3.baseShield,ship.Item3) );
+                    newShips.Add( (ships[i].Item1, ships[i].Item3.baseShield, ships[i].Item3) );
                 }
             }
             ships = newShips;
+#if DEBUG
             Console.WriteLine(group + ": Length after cleanup " + ships.Count);
+#endif
 
 #if SMALLARMY
             Debugger.ConsoleLog(ships);
@@ -81,6 +84,7 @@ namespace OgSim.Battle
             Random rn = new Random();
 
             int tA = ships.Count;
+            int sCount = ships.Count;
             double tDm = 0.0;
             double tDf = 0.0;
             var enemyShips = otherGroup.ships;
@@ -90,15 +94,16 @@ namespace OgSim.Battle
             double de;
             double remaining;
             double xp;
+            (double, double, ShipType) ship, enemyShip;
 
             int enemyPos;
-            (double, double, ShipType) enemyShip;
             ShipType enemyShipType;
 
             bool running;
 
-            foreach (var ship in ships)
+            for(int i=0; i < sCount; i++)
             {
+                ship = ships[i];
                 dm = ship.Item3.baseAttack;
 
                 running = true;

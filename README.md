@@ -1,2 +1,2 @@
 # ogsim-csharp
-Port of the OgSimulator (Still being tested)
+Port of the OgSimulator to C Sharp
